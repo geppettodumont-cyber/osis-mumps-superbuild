@@ -12,8 +12,7 @@ This CMake superbuild downloads the unmodified source tarfile from mumps-solver.
 
 Optional support for CUDA GPA and xKBLAS GPU-accelerated BLAS is [available](./Readme_options.md).
 
-CMake builds MUMPS quickly and more conveniently than the original Makefiles.
-CMake allows easy reuse of MUMPS in external projects via any of:
+CMake builds MUMPS quickly and more conveniently than the original Makefiles. CMake allows easy reuse of MUMPS in external projects via any of:
 
 * CMake [FetchContent](https://gist.github.com/scivision/2ad002ed26589783f1522160da4d27d1)
 * build MUMPS, `cmake --install`, then [find_package(MUMPS CONFIG REQUIRED)](https://gist.github.com/scivision/1ea2d19011c165b39b15ccb95d54f451)
@@ -42,6 +41,11 @@ See the
 and
 [MUMPS User Guide](https://mumps-solver.org/index.php?page=doc)
 for any questions about MUMPS itself.
+
+## Shared Libraries and Runtime Dependency Resolution
+
+When building shared libraries with `-DBUILD_SHARED_LIBS=on`, the installed MUMPS libraries include relative RPATH entries (`$ORIGIN`, `$ORIGIN/..`) that allow runtime dependencies to be resolved relative to the installation location.
+This ensures correct resolution of MUMPS dependencies (BLAS, MPI, Scotch, etc.) without requiring environment setup through modules or `LD_LIBRARY_PATH`, especially when MUMPS is used as a transitive dependency of another library.
 
 ## Build
 
