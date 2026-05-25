@@ -53,10 +53,7 @@ Result Variables
 References
 ^^^^^^^^^^
 
-* Pkg-Config and MKL:  https://software.intel.com/en-us/articles/intel-math-kernel-library-intel-mkl-and-pkg-config-tool
-* MKL for Windows: https://software.intel.com/en-us/mkl-windows-developer-guide-static-libraries-in-the-lib-intel64-win-directory
-* MKL Windows directories: https://software.intel.com/en-us/mkl-windows-developer-guide-high-level-directory-structure
-* MKL link-line advisor: https://software.intel.com/en-us/articles/intel-mkl-link-line-advisor
+* MKL link-line advisor: https://www.intel.com/content/www/us/en/developer/tools/oneapi/onemkl-link-line-advisor.html
 #]=======================================================================]
 
 include(CheckSourceCompiles)

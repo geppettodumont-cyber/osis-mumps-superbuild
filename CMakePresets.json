@@ -122,6 +122,21 @@
   "cacheVariables": {
     "MUMPS_parmetis": true
   }
+},
+{
+  "name": "aocl-win", "inherits": "default",
+  "condition": {
+    "type": "equals",
+    "lhs": "${hostSystemName}",
+    "rhs": "Windows"
+  },
+  "cacheVariables": {
+    "LAPACK_VENDOR": "AOCL",
+    "SCALAPACK_VENDOR": "AOCL",
+    "BLAS_ROOT": "$env{ProgramFiles}/AMD/AOCL-Windows/amd-blis",
+    "LAPACK_ROOT": "$env{ProgramFiles}/AMD/AOCL-Windows/amd-libflame",
+    "SCALAPACK_ROOT": "$env{ProgramFiles}/AMD/AOCL-Windows/amd-scalapack"
+  }
 }
 ],
 "buildPresets": [
