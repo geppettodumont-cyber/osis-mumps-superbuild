@@ -49,13 +49,6 @@ list(APPEND mumps_fflags
 "$<$<AND:$<COMPILE_LANG_AND_ID:Fortran,GNU>,$<VERSION_GREATER_EQUAL:${CMAKE_Fortran_COMPILER_VERSION},10>>:-fallow-argument-mismatch;-fallow-invalid-boz>"
 )
 
-
-# the Intel oneAPI fpscomp flag needs to be applied EVERYWHERE incl. submodule projects
-# or runtime errors / weird behavior with unresolved procedures that actually exist.
-# -standard-semantics is no good because it breaks linkage within oneAPI itself e.g. oneMPI library!
-add_compile_options("$<$<COMPILE_LANG_AND_ID:Fortran,IntelLLVM>:-fpscomp:logicals>")
-# Leave this as ADD_COMPILE_OPTIONS()!
-
 if(MUMPS_intsize64)
   # ALL libraries must be compiled with -fdefault-integer-8, including MPI,
   # or runtime fails
