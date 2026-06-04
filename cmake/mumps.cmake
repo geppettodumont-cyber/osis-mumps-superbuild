@@ -187,61 +187,36 @@ add_library(MUMPS INTERFACE)
 
 function(precision_source a)
 
-set(SRC_Fortran ${a}sol_distrhs.F)
+mumps_get_src(SRC_C arith_c base)
+list(TRANSFORM SRC_C PREPEND ${a})
 
-set(SRC_C ${a}mumps_gpu.c)
-
-foreach(i IN ITEMS mumps_comm_buffer.F mumps_ooc_buffer.F mumps_ooc.F mumps_struc_def.F
-                   ana_aux.F ana_aux_par.F ana_lr.F fac_asm_master_ELT_m.F fac_asm_master_m.F fac_front_aux.F fac_front_LU_type1.F fac_front_LU_type2.F fac_front_LDLT_type1.F fac_front_LDLT_type2.F fac_front_type2_aux.F fac_lr.F fac_omp_m.F fac_par_m.F lr_core.F mumps_lr_data_m.F omp_tps_m.F static_ptr_m.F
-                   lr_type.F mumps_save_restore.F mumps_save_restore_files.F
-                   fac_mem_dynamic.F mumps_config_file.F mumps_sol_es.F sol_lr.F
-                   )
-  list(APPEND SRC_Fortran ${a}${i})
-endforeach()
+mumps_get_src(SRC_Fortran arith_fortran base)
 
 if(MUMPS_ACTUAL_VERSION VERSION_GREATER_EQUAL 5.3)
-  foreach(i IN ITEMS fac_sispointers_m.F fac_sol_l0omp_m.F sol_omp_m.F)
-    list(APPEND SRC_Fortran ${a}${i})
-  endforeach()
+  mumps_get_src(_c arith_fortran ge_5_3)
+  list(APPEND SRC_Fortran ${_c})
 endif()
 if(MUMPS_ACTUAL_VERSION VERSION_GREATER_EQUAL 5.6)
-  list(APPEND SRC_Fortran ${a}mumps_mpi3_mod.F)
+  mumps_get_src(_c arith_fortran ge_5_6)
+  list(APPEND SRC_Fortran ${_c})
 endif()
 
 if(MUMPS_ACTUAL_VERSION VERSION_LESS 5.8)
-  list(APPEND SRC_Fortran ${a}lr_stats.F ${a}mumps_load.F)
+  mumps_get_src(_c arith_fortran lt_5_8)
+  list(APPEND SRC_Fortran ${_c})
 else()
-  list(APPEND SRC_Fortran ${a}fac_compact_factors_m.F ${a}mumps_intr_types.F)
+  mumps_get_src(_c arith_fortran ge_5_8)
+  list(APPEND SRC_Fortran ${_c})
 endif()
-
-foreach(i IN ITEMS
-  ini_driver.F ana_driver.F fac_driver.F
-  sol_driver.F
-  end_driver.F ana_aux_ELT.F ana_dist_m.F ana_LDLT_preprocess.F
-  ana_reordertree.F arrowheads.F bcast_int.F fac_asm_ELT.F
-  fac_asm.F fac_b.F fac_distrib_distentry.F fac_distrib_ELT.F fac_lastrtnelind.F
-  fac_mem_alloc_cb.F fac_mem_compress_cb.F fac_mem_free_block_cb.F
-  fac_mem_stack_aux.F fac_mem_stack.F
-  fac_process_band.F fac_process_blfac_slave.F fac_process_blocfacto_LDLT.F fac_process_blocfacto.F
-  fac_process_bf.F fac_process_end_facto_slave.F
-  fac_process_contrib_type1.F fac_process_contrib_type2.F fac_process_contrib_type3.F
-  fac_process_maprow.F fac_process_master2.F fac_process_message.F
-  fac_process_root2slave.F fac_process_root2son.F fac_process_rtnelind.F fac_root_parallel.F
-  fac_scalings.F fac_determinant.F fac_scalings_simScaleAbs.F fac_scalings_simScale_util.F
-  fac_sol_pool.F fac_type3_symmetrize.F ini_defaults.F
-  mumps_driver.F mumps_f77.F mumps_iXamax.F
-  ana_mtrans.F ooc_panel_piv.F rank_revealing.F
-  sol_aux.F sol_bwd_aux.F sol_bwd.F sol_c.F sol_fwd_aux.F sol_fwd.F sol_matvec.F
-  sol_root_parallel.F tools.F type3_root.F
-)
-  list(APPEND SRC_Fortran ${a}${i})
-endforeach()
 
 if(MUMPS_ACTUAL_VERSION VERSION_GREATER_EQUAL 5.7)
-  list(APPEND SRC_Fortran ${a}sol_distsol.F ${a}fac_diag.F ${a}fac_dist_arrowheads_omp.F)
+  mumps_get_src(_c arith_fortran ge_5_7)
+  list(APPEND SRC_Fortran ${_c})
 endif()
 
-set(CINT_SRC mumps_c.c)
+list(TRANSFORM SRC_Fortran PREPEND ${a})
+
+mumps_get_src(CINT_SRC cint base)
 
 add_library(${a}mumps_C OBJECT ${CINT_SRC} ${SRC_C})
 target_compile_definitions(${a}mumps_C PRIVATE ${ORDERING_DEFS} ${mumps_cdefs} MUMPS_ARITH=MUMPS_ARITH_${a})
