@@ -13,6 +13,9 @@ endif()
 set(_json_fn ${CMAKE_CURRENT_SOURCE_DIR}/cmake/libraries.json)
 file(READ ${_json_fn} json)
 
+set(_source_json_fn ${CMAKE_CURRENT_SOURCE_DIR}/cmake/source.json)
+file(READ ${_source_json_fn} source_json)
+
 get_property(is_multi_config GLOBAL PROPERTY GENERATOR_IS_MULTI_CONFIG)
 if(NOT is_multi_config AND NOT (CMAKE_BUILD_TYPE OR DEFINED ENV{CMAKE_BUILD_TYPE}))
   set(CMAKE_BUILD_TYPE Release CACHE STRING "Release default" FORCE)

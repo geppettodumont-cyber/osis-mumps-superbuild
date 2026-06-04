@@ -1,0 +1,82 @@
+{
+  "mumps_sources": {
+    "comm_c": {
+        "base": [
+        "mumps_common.c",
+        "mumps_io_basic.c",
+        "mumps_io_thread.c",
+        "mumps_io_err.c",
+        "mumps_io.c",
+        "mumps_numa.c",
+        "mumps_pord.c",
+        "mumps_thread.c",
+        "mumps_save_restore_C.c",
+        "mumps_config_file_C.c",
+        "mumps_thread_affinity.c"
+    ],
+    "ge_5_4": [ "mumps_register_thread.c" ],
+    "ge_5_6": [ "mumps_addr.c" ],
+    "lt_5_6": [ "mumps_size.c" ],
+    "ge_5_8": [ "mumps_flytes.c" ],
+    "ge_5_9": [ "mumps_sol_omp_memory_manager.c" ],
+    "metis": [ "mumps_metis.c", "mumps_metis64.c", "mumps_metis_int.c" ],
+    "scotch": [ "mumps_scotch.c", "mumps_scotch64.c", "mumps_scotch_int.c" ]
+    },
+    "comm_fortran": {
+        "base": [
+        "ana_orderings.F",
+        "ana_set_ordering.F",
+        "ana_AMDMF.F",
+        "bcast_errors.F",
+        "estim_flops.F",
+        "mumps_type2_blocking.F",
+        "mumps_version.F",
+        "mumps_print_defined.F",
+        "sol_common.F",
+        "tools_common.F"
+        ],
+        "ge_5_3": [ "ana_blk.F" ],
+        "lt_5_7": [ "mumps_type_size.F" ]
+    },
+    "comm_src_fortran": {
+      "base": [
+        "mumps_ooc_common.F",
+        "mumps_static_mapping.F",
+        "ana_omp_m.F",
+        "double_linked_list.F",
+        "fac_asm_build_sort_index_ELT_m.F",
+        "fac_asm_build_sort_index_m.F",
+        "fac_descband_data_m.F",
+        "fac_future_niv2_mod.F",
+        "fac_maprow_data_m.F",
+        "front_data_mgt_m.F",
+        "mumps_l0_omp_m.F",
+        "omp_tps_common_m.F",
+        "ana_orderings_wrappers_m.F",
+        "lr_common.F",
+        "mumps_memory_mod.F"
+      ],
+      "ge_5_3": [
+        "ana_blk_m.F"
+      ],
+      "ge_5_6": [
+        "mumps_pivnul_mod.F"
+      ],
+      "ge_5_7": [
+        "sol_ds_common_m.F"
+      ],
+      "lt_5_8": [
+        "fac_ibct_data_m.F",
+        "mumps_comm_ibcast.F"
+      ],
+      "ge_5_8": [
+        "lr_stats.F",
+        "mumps_comm_buffer_common.F",
+        "mumps_intr_types_common.F",
+        "mumps_load.F",
+        "sol_omp_common_m.F",
+        "tools_common_m.F"
+      ]
+    }
+  }
+}
