@@ -44,7 +44,7 @@ list(APPEND mumps_fflags "$<$<COMPILE_LANG_AND_ID:Fortran,FlangLLVM,GNU>:-fno-st
 list(APPEND mumps_fflags $<$<AND:$<COMPILE_LANG_AND_ID:Fortran,IntelLLVM>,$<BOOL:${WIN32}>>:/heap-arrays>)
 
 list(APPEND mumps_fflags
-"$<$<COMPILE_LANG_AND_ID:Fortran,IntelLLVM>:$<IF:$<BOOL:${WIN32}>,/warn:declarations,-implicitnone>>"
+"$<$<COMPILE_LANG_AND_ID:Fortran,IntelLLVM>:-warn:declarations>"
 "$<$<COMPILE_LANG_AND_ID:Fortran,GNU>:-fimplicit-none>"
 )
 
@@ -56,7 +56,7 @@ list(APPEND mumps_fflags
 # the Intel oneAPI fpscomp flag needs to be applied EVERYWHERE incl. submodule projects
 # or runtime errors / weird behavior with unresolved procedures that actually exist.
 # -standard-semantics is no good because it breaks linkage within oneAPI itself e.g. oneMPI library!
-add_compile_options("$<$<COMPILE_LANG_AND_ID:Fortran,IntelLLVM>:$<IF:$<BOOL:${WIN32}>,/fpscomp:logicals,-fpscomp;logicals>>")
+add_compile_options("$<$<COMPILE_LANG_AND_ID:Fortran,IntelLLVM>:-fpscomp:logicals>")
 # Leave this as ADD_COMPILE_OPTIONS()!
 
 if(MUMPS_intsize64)
