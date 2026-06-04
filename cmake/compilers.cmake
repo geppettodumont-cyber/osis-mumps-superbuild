@@ -40,9 +40,6 @@ list(APPEND mumps_cflags
 )
 list(APPEND mumps_fflags "$<$<COMPILE_LANG_AND_ID:Fortran,FlangLLVM,GNU>:-fno-strict-aliasing>")
 
-# /heap-arrays might not be needed anymore on Windows
-list(APPEND mumps_fflags $<$<AND:$<COMPILE_LANG_AND_ID:Fortran,IntelLLVM>,$<BOOL:${WIN32}>>:/heap-arrays>)
-
 list(APPEND mumps_fflags
 "$<$<COMPILE_LANG_AND_ID:Fortran,IntelLLVM>:-warn:declarations>"
 "$<$<COMPILE_LANG_AND_ID:Fortran,GNU>:-fimplicit-none>"
