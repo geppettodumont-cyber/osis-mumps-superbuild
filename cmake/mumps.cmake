@@ -105,7 +105,7 @@ target_compile_options(mumps_common_Fortran PRIVATE ${mumps_fflags})
 get_property(mumps_common_Fortran_defs TARGET mumps_common_Fortran PROPERTY COMPILE_DEFINITIONS)
 message(DEBUG "mumps_common_Fortran compile definitions: ${mumps_common_Fortran_defs}")
 if("MPI_TO_K_OMP" IN_LIST mumps_common_Fortran_defs OR
-   NOT CMAKE_GENERATOR STREQUAL "Unix Makefiles")
+   NOT CMAKE_GENERATOR MATCHES "MinGW|Unix Makefiles")
    # Error copying Fortran module "src/mumps_mpitoomp_m.mod" with GNU Make
    # the issue seems to be that the Fortran module is only present if MPI_TO_K_OMP is defined.
    # detect if this worked as intended - assuming MPI_TO_K_OMP not defined and building with Ninja:
