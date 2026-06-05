@@ -183,6 +183,31 @@
         "sol_omp_common_m.F",
         "tools_common_m.F"
       ]
+    },
+    "matlab": {
+      "d": [ "mumpsmex.c" ]
+    },
+    "mpiseq": {
+      "c": [ "elapse.c", "mpic.c" ],
+      "fortran": [ "mpi.f" ]
+    },
+    "pord": {
+      "base": [
+        "graph.c",
+        "gbipart.c",
+        "gbisect.c",
+        "ddcreate.c",
+        "ddbisect.c",
+        "nestdiss.c",
+        "multisector.c",
+        "gelim.c",
+        "bucket.c",
+        "tree.c",
+        "symbfac.c",
+        "interface.c",
+        "sort.c",
+        "minpriority.c"
+      ]
     }
   }
 }

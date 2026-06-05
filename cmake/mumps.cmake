@@ -22,21 +22,6 @@ CONTENT "#ifndef MUMPS_INT_H
 endif()
 
 # -- Mumps COMMON
-function(mumps_get_src out key1 key2)
-  string(JSON L LENGTH "${source_json}" "mumps_sources" "${key1}" "${key2}")
-
-  set(_files)
-  if(L GREATER 0)
-    math(EXPR L "${L} - 1")
-    foreach(_idx RANGE ${L})
-      string(JSON _src_file GET "${source_json}" "mumps_sources" "${key1}" "${key2}" ${_idx})
-      list(APPEND _files ${_src_file})
-    endforeach()
-  endif()
-
-  set(${out} "${_files}" PARENT_SCOPE)
-endfunction()
-
 mumps_get_src(COMM_SRC_Fortran comm_src_fortran base)
 
 if(MUMPS_ACTUAL_VERSION VERSION_GREATER_EQUAL 5.3)

@@ -90,6 +90,18 @@
   }
 },
 {
+  "name": "matlab", "inherits": "nompi",
+  "binaryDir": "build-matlab",
+  "installDir": "${fileDir}/build-matlab/local",
+  "cacheVariables": {
+    "MUMPS_matlab": true,
+    "BUILD_SINGLE": false,
+    "BUILD_DOUBLE": true,
+    "BUILD_COMPLEX": false,
+    "BUILD_COMPLEX16": false
+  }
+},
+{
   "name": "scotch", "inherits": "default",
   "binaryDir": "build-${presetName}",
   "installDir": "${fileDir}/build-${presetName}/local",
@@ -162,6 +174,7 @@
     }
   },
   { "name": "shared", "configurePreset": "shared", "inherits": "default" },
+  { "name": "matlab", "configurePreset": "matlab", "inherits": "nompi" },
   { "name": "scotch", "configurePreset": "scotch", "inherits": "default" },
   { "name": "metis", "configurePreset": "metis", "inherits": "default" },
   { "name": "scotch-metis", "configurePreset": "scotch-metis", "inherits": "default" },
@@ -204,6 +217,7 @@
     }
 },
 { "name": "shared", "configurePreset": "shared", "inherits": "default" },
+{ "name": "matlab", "configurePreset": "matlab", "inherits": "nompi" },
 { "name": "scotch", "configurePreset": "scotch", "inherits": "default" },
 { "name": "metis", "configurePreset": "metis", "inherits": "default" },
 { "name": "scotch-metis", "configurePreset": "scotch-metis", "inherits": "default" },
@@ -272,6 +286,14 @@
       { "type": "configure", "name": "shared" },
       { "type": "build", "name": "shared" },
       { "type": "test", "name": "shared" }
+    ]
+  },
+  {
+    "name": "matlab", "displayName": "Build and Test MATLAB Interface",
+    "steps": [
+      { "type": "configure", "name": "matlab" },
+      { "type": "build", "name": "matlab" },
+      { "type": "test", "name": "matlab" }
     ]
   },
   { "name": "linux", "displayName": "Build and Test on Linux (WSL)",

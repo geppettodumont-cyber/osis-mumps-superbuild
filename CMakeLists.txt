@@ -129,6 +129,8 @@ include(cmake/compilers.cmake)
 message(STATUS "MUMPS ${PROJECT_VERSION} upstream ${MUMPS_UPSTREAM_VERSION} install prefix: ${CMAKE_INSTALL_PREFIX}")
 message(STATUS "CMake ${CMAKE_VERSION}  Toolchain ${CMAKE_TOOLCHAIN_FILE}")
 
+include(cmake/MumpsGetSource.cmake)
+
 # --- dependencies
 find_package(Threads)
 

@@ -8,9 +8,11 @@ endif()
 
 find_package(Matlab REQUIRED COMPONENTS MEX_COMPILER MAIN_PROGRAM)
 
+mumps_get_src(matlab_d_sources matlab d)
+
 matlab_add_mex(NAME dmumpsmex
 SHARED
-SRC mumpsmex.c
+SRC ${matlab_d_sources}
 LINK_TO MUMPS::MUMPS
 )
 

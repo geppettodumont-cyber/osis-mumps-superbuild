@@ -1,4 +1,6 @@
-add_library(mpiseq_c elapse.c mpic.c)
+mumps_get_src(mpiseq_c_sources mpiseq c)
+
+add_library(mpiseq_c ${mpiseq_c_sources})
 target_include_directories(mpiseq_c PUBLIC
 "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>"
 $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
@@ -6,7 +8,10 @@ $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 target_compile_options(mpiseq_c PRIVATE ${mumps_cflags})
 target_compile_definitions(mpiseq_c PRIVATE ${mumps_cdefs})
 
-add_library(mpiseq_fortran mpi.f $<TARGET_OBJECTS:mpiseq_c>)
+
+mumps_get_src(mpiseq_fortran_sources mpiseq fortran)
+
+add_library(mpiseq_fortran ${mpiseq_fortran_sources} $<TARGET_OBJECTS:mpiseq_c>)
 # BUILD_SHARED_LIBS=on reveals that $<TARGET_OBJECTS:mpiseq_c> is needed in the Fortran target
 target_include_directories(mpiseq_fortran PUBLIC
 "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>"
