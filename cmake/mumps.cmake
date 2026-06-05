@@ -138,7 +138,7 @@ foreach(t IN ITEMS mumps_common mumps_common_C mumps_common_Fortran)
   $<$<AND:$<BOOL:${MUMPS_scalapack}>,$<BOOL:${MUMPS_parallel}>>:SCALAPACK::SCALAPACK>
   LAPACK::LAPACK
   "$<$<BOOL:${MUMPS_gpu}>:CUDA::cublas;CUDA::cudart>"
-  "$<$<BOOL:${MUMPS_xkblas}>:xkblas::xkblas>"
+  $<$<BOOL:${MUMPS_xkblas}>:xkblas::xkblas>
   $<$<BOOL:${IMPI_LIB64}>:${IMPI_LIB64}>
   ${CMAKE_THREAD_LIBS_INIT}
   )
@@ -148,7 +148,8 @@ endforeach()
 
 target_link_libraries(mumps_common PRIVATE
 MPI::MPI_Fortran MPI::MPI_C
-"$<$<BOOL:${MUMPS_openmp}>:OpenMP::OpenMP_Fortran;OpenMP::OpenMP_C>"
+$<$<BOOL:${MUMPS_openmp}>:OpenMP::OpenMP_Fortran>
+$<$<BOOL:${MUMPS_openmp}>:OpenMP::OpenMP_C>
 )
 # this is needed for mpiseq, and is best for clarity and consistency
 
@@ -215,6 +216,7 @@ add_library(${a}mumps_Fortran OBJECT ${SRC_Fortran})
 target_link_libraries(${a}mumps_Fortran PRIVATE
 MPI::MPI_Fortran
 $<$<BOOL:${MUMPS_openmp}>:OpenMP::OpenMP_Fortran>
+$<$<TARGET_EXISTS:mumps_dummy_openmp>:mumps_dummy_openmp>
 )
 target_compile_definitions(${a}mumps_Fortran PRIVATE ${ORDERING_DEFS} ${mumps_fdefs})
 target_compile_options(${a}mumps_Fortran PRIVATE ${mumps_fflags})
@@ -235,8 +237,7 @@ target_link_libraries(${a}mumps PRIVATE
 MPI::MPI_Fortran
 $<$<BOOL:${MUMPS_openmp}>:OpenMP::OpenMP_Fortran>
 )
-# this is needed for mpiseq, and is best for clarity and consistency
-
+# MPI::MPI_Fortran is needed for mpiseq as well
 
 string(TOUPPER ${a} aup)
 

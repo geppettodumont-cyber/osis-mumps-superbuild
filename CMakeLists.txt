@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.25...4.4)
 # CMake >= 3.24 for FetchContent FIND_PACKAGE_ARGS
 # CMAKE >= 3.25 for block(), VALIDATOR on find_*()
 
-set(MUMPS_PROJECT_VERSION 5.9.0.3)
+set(MUMPS_PROJECT_VERSION 5.9.0.4)
 
 if(CMAKE_SOURCE_DIR STREQUAL CMAKE_BINARY_DIR)
   message(FATAL_ERROR "Please use out of source build:
@@ -92,19 +92,31 @@ enable_testing()
 
 include(GNUInstallDirs)
 
-# --- sanity checks
+# --- Checks and workarounds
 if(MSVC AND BUILD_SHARED_LIBS)
   message(WARNING "MUMPS: Windows IntelLLVM compilers with **shared** libraries is not supported and will probably fail.
   Recommend using static libraries, which does work:
   cmake -DBUILD_SHARED_LIBS=off")
 endif()
 
-if(CMAKE_Fortran_COMPILER_ID STREQUAL "LLVMFlang" AND CMAKE_GENERATOR MATCHES "Ninja")
-  message(WARNING "MUMPS: LLVM Flang with Ninja generator may fail to build.
-  https://gitlab.kitware.com/cmake/cmake/-/issues/27702
-
-Recommend using Makefiles generator instead:
-cmake -G \"Unix Makefiles\" -B build --fresh")
+if(CMAKE_Fortran_COMPILER_ID STREQUAL "LLVMFlang")
+  if(CMAKE_GENERATOR MATCHES "Ninja")
+    if(WIN32)
+      set(_g "MinGW Makefiles")
+    else()
+      set(_g "Unix Makefiles")
+    endif()
+    message(WARNING "MUMPS: LLVM Flang with Ninja generator may fail to build. https://gitlab.kitware.com/cmake/cmake/-/issues/27702
+    Recommend using Makefiles generator instead:   cmake -G \"${_g}\" -B build --fresh")
+  endif()
+  # unconditional find because of "use omp_lib" that have existed possibly forever in some MUMPS sources,
+  # that GFortran ignores, but Flang does not ignore.
+  if(NOT MUMPS_openmp)
+    message(STATUS "Implementing dummy OpenMP to workaround MUMPS source files that use omp_lib but don't guard it with !$ sentinel")
+    # OBJECT builds omp_lib.mod, but INTERFACE does not.
+    add_library(mumps_dummy_openmp OBJECT src/dummy_openmp.f90)
+    target_include_directories(mumps_dummy_openmp INTERFACE ${CMAKE_CURRENT_BINARY_DIR})  #Fortran_MODULE_DIRECTORY is empty by default
+  endif()
 endif()
 
 
@@ -133,6 +145,10 @@ include(cmake/MumpsGetSource.cmake)
 
 # --- dependencies
 find_package(Threads)
+
+if(MUMPS_openmp)
+  find_package(OpenMP COMPONENTS C Fortran REQUIRED)
+endif()
 
 if(MUMPS_gpu)
 # see User Manual section 5.27
@@ -210,10 +226,6 @@ else()
   )
   add_subdirectory(${mumps_upstream_SOURCE_DIR}/libseq libseq)
 
-endif()
-
-if(MUMPS_openmp)
-  find_package(OpenMP COMPONENTS C Fortran REQUIRED)
 endif()
 
 # GEMMT is recommended in MUMPS User Manual if available

@@ -15,13 +15,6 @@ if(MSVC)
 endif()
 
 if(MUMPS_openmp)
-  list(APPEND mumps_cflags
-  "$<$<COMPILE_LANG_AND_ID:C,IntelLLVM>:$<IF:$<BOOL:${WIN32}>,/Qopenmp,-fiopenmp>>"
-  "$<$<COMPILE_LANG_AND_ID:C,MSVC>:/openmp>"
-  )
-  list(APPEND mumps_fflags
-  "$<$<COMPILE_LANG_AND_ID:Fortran,IntelLLVM>:$<IF:$<BOOL:${WIN32}>,/Qopenmp,-fiopenmp>>"
-  )
   if(MUMPS_scotch)
     list(APPEND mumps_cdefs "MUMPS_SCOTCHIMPORTOMPTHREADS")
     list(APPEND mumps_fdefs "MUMPS_SCOTCHIMPORTOMPTHREADS")
