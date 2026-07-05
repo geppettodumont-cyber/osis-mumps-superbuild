@@ -8,17 +8,19 @@ endif()
 
 find_package(Matlab REQUIRED COMPONENTS MEX_COMPILER MAIN_PROGRAM)
 
-mumps_get_src(matlab_d_sources matlab d)
+mumps_get_src(matlab_c_sources matlab c)
 
 matlab_add_mex(NAME dmumpsmex
 SHARED
-SRC ${matlab_d_sources}
+SRC ${matlab_c_sources}
 LINK_TO MUMPS::MUMPS
+R2018a
 )
+target_compile_definitions(dmumpsmex PRIVATE MUMPS_ARITH=MUMPS_ARITH_d)
 
 add_test(NAME matlabMEX
 COMMAND ${Matlab_MAIN_PROGRAM} -sd ${CMAKE_CURRENT_SOURCE_DIR}
--batch "addpath('$<TARGET_FILE_DIR:dmumps>'), sparserhs_example"
+-batch "addpath('$<TARGET_FILE_DIR:dmumpsmex>'), sparserhs_example"
 )
 set_tests_properties(matlabMEX PROPERTIES
 TIMEOUT 90
@@ -26,5 +28,3 @@ LABELS "mumps:matlab"
 PASS_REGULAR_EXPRESSION "SOLUTION OK"
 )
 # sometimes the example succeeds but hangs on cleanup
-
-target_compile_definitions(dmumpsmex PRIVATE MUMPS_ARITH=MUMPS_ARITH_d)

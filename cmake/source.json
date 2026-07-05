@@ -185,7 +185,7 @@
       ]
     },
     "matlab": {
-      "d": [ "mumpsmex.c" ]
+      "c": [ "mumpsmex.c" ]
     },
     "mpiseq": {
       "c": [ "elapse.c", "mpic.c" ],
