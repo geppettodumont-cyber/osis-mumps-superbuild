@@ -96,7 +96,7 @@ These libraries can be linked into C, C++, Fortran, etc. programs, or even be us
 and
 [python-mumps](https://pypi.org/project/python-mumps/).
 
-## offline / cache source
+## Offline sources for MUMPS, Scalapack, and/or other prerequisites
 
 For offline / cached MUMPS source usage, the user can download & specify a local MUMPS source archive like:
 
@@ -110,6 +110,64 @@ The MUMPS version can be omitted to download a recent version, default location 
 
 ```sh
 cmake -P scripts/DownloadMUMPSsource.cmake
+```
+
+In general, the
+[FETCHCONTENT_SOURCE_DIR_<uppercaseName>](https://cmake.org/cmake/help/latest/module/FetchContent.html#variable:FETCHCONTENT_SOURCE_DIR_%3CuppercaseName%3E)
+variable can be used to specify a local source directory for MUMPS and MUMPS prerequisites (ScaLAPACK, ParMETIS, METIS, Scotch, xKBLAS, win_flex_bison).
+It's only designed for DIRECTORY usage, not for compressed archives, so the user must extract the source archive to a directory first.
+
+### MUMPS offline source examples
+
+Example for MUMPS source that's extracted to a directory (say to workaround a bug in a specific version of MUMPS):
+
+```sh
+curl -o ./mumps-5.9.0.tar.gz -L https://mumps-solver.org/MUMPS_5.9.0.tar.gz
+
+tar -xf ./mumps-5.9.0.tar.gz
+
+cmake -DFETCHCONTENT_SOURCE_DIR_MUMPS_UPSTREAM="./MUMPS_5.9.0" -Bbuild
+```
+
+Example for MUMPS source that's downloaded as a compressed archive:
+
+```sh
+curl -o ./mumps-5.9.0.tar.gz -L https://mumps-solver.org/MUMPS_5.9.0.tar.gz
+
+cmake -DMUMPS_url="./mumps-5.9.0.tar.gz" -Bbuild
+```
+
+### MUMPS prerequisite offline source examples
+
+Example for library that's extracted to a directory (say to workaround a bug in a specific version of ScaLAPACK):
+
+```sh
+curl -o ./scalapack.tar.gz -L https://github.com/Reference-ScaLAPACK/scalapack/archive/8ea5880a448cd24622dff95fd1b7394c31e61bda.tar.gz
+
+tar -xf ./scalapack.tar.gz
+
+cmake -DFETCHCONTENT_SOURCE_DIR_SCALAPACK="./scalapack-8ea5880a448cd24622dff95fd1b7394c31e61bda" -Bbuild
+```
+
+MUMPS prerequisites can also be specified with offline source archives.
+
+Example for library that's downloaded as a compressed archive:
+
+```sh
+curl -o ./scalapack.tar.gz -L https://github.com/Reference-ScaLAPACK/scalapack/archive/8ea5880a448cd24622dff95fd1b7394c31e61bda.tar.gz
+
+cmake -Dscalapack_url="./scalapack.tar.gz" -Bbuild
+```
+
+Archive URLs can be specified for any of the MUMPS prerequisites, for example:
+
+```
+scalapack_url
+parmetis_url
+metis_url
+scotch_url
+xkblas_url
+win_flex_bison_url
 ```
 
 ## Target dependency graph
